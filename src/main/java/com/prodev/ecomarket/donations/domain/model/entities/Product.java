@@ -1,4 +1,4 @@
-package com.prodev.ecomarket.donations.model.entities;
+package com.prodev.ecomarket.donations.domain.model.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

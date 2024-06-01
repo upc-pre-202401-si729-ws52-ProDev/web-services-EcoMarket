@@ -1,4 +1,4 @@
-package com.prodev.ecomarket.donations.model.aggregates;
+package com.prodev.ecomarket.donations.domain.model.aggregates;
 
 /**
  * Donation Aggregate
@@ -6,9 +6,9 @@ package com.prodev.ecomarket.donations.model.aggregates;
  */
 
 
-import com.prodev.ecomarket.donations.model.commands.CreateDonationCommand;
-import com.prodev.ecomarket.donations.model.entities.Company;
-import com.prodev.ecomarket.donations.model.entities.Product;
+import com.prodev.ecomarket.donations.domain.model.commands.CreateDonationCommand;
+import com.prodev.ecomarket.donations.domain.model.entities.Company;
+import com.prodev.ecomarket.donations.domain.model.entities.Product;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

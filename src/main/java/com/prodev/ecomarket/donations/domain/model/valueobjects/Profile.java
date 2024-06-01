@@ -1,4 +1,4 @@
-package com.prodev.ecomarket.donations.model.valueobjects;
+package com.prodev.ecomarket.donations.domain.model.valueobjects;
 
 import jakarta.persistence.*;
 

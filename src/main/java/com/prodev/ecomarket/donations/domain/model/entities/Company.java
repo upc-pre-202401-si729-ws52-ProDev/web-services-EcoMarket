@@ -1,13 +1,12 @@
-package com.prodev.ecomarket.donations.model.entities;
+package com.prodev.ecomarket.donations.domain.model.entities;
 
-import com.prodev.ecomarket.donations.model.valueobjects.Profile;
+import com.prodev.ecomarket.donations.domain.model.valueobjects.Profile;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.*;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class Company extends Profile {
