@@ -1,4 +1,4 @@
 package com.prodev.ecomarket.donations.domain.model.queries;
 
-public record GetAllDonationsByOngQuery() {
+public record GetCompanyByNameQuery(String name) {
 }

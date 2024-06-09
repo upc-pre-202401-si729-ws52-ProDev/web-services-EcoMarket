@@ -29,6 +29,7 @@ public class Donation extends AbstractAggregateRoot<Donation> {
     private Long id;
 
     /**The donation creation date*/
+    @Getter
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private Date createdAt;
@@ -49,12 +50,15 @@ public class Donation extends AbstractAggregateRoot<Donation> {
     private String ong;
 
     /**The product donated*/
+
+    @Getter
     @ManyToOne
     @JoinColumn(name = "product_id",nullable = false,
             foreignKey = @ForeignKey(name = "FK_donation_product"))
     private Product product;
 
     /**The company that made the donation*/
+    @Getter
     @ManyToOne
     @JoinColumn(name = "company_id",nullable = false,
             foreignKey = @ForeignKey(name = "FK_donation_company"))
