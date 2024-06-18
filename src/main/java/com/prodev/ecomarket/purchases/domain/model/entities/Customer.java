@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
+@Getter
 @Data
 @Builder
 @AllArgsConstructor
@@ -15,10 +16,12 @@ import lombok.Getter;
 public class Customer extends Profile {
 
     @Column(nullable = false, length = 200)
-    @Getter
     private String address;
 
     @Column(nullable = false, length = 9)
-    @Getter
     private int loyaltyPoi;
+
+    public Customer() {
+
+    }
 }
