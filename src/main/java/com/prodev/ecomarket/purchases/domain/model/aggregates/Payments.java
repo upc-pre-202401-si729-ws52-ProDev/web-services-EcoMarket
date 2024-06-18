@@ -1,6 +1,7 @@
 package com.prodev.ecomarket.purchases.domain.model.aggregates;
 
 import com.prodev.ecomarket.purchases.domain.model.commands.CreatePaymentsCommand;
+import com.prodev.ecomarket.purchases.domain.model.valueobjects.PaymentStatus;
 import com.prodev.ecomarket.purchases.infrastructure.persistence.jpa.repositories.CustomerRepository;
 import com.prodev.ecomarket.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
@@ -18,6 +19,7 @@ public class Payments extends AuditableAbstractAggregateRoot<Payments> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     private Long id;
+
     @Getter
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -29,7 +31,7 @@ public class Payments extends AuditableAbstractAggregateRoot<Payments> {
 
     @Column(nullable = false, length = 50)
     @Getter
-    private String status;
+    private PaymentStatus status;
 
     @Column(nullable = false, length = 50)
     @Getter
@@ -43,13 +45,18 @@ public class Payments extends AuditableAbstractAggregateRoot<Payments> {
     private Customer customer;
 
 
-    protected Payments() {
+    public Payments() {
     }
 
-    public Payments(CreatePaymentsCommand command, CustomerRepository customerRepository) {
+    public Payments(CreatePaymentsCommand command, Customer customer, PaymentStatus status) {
         this.amount = command.amount();
-        this.status = command.status();
+        this.status = status;
         this.method = command.method();
+        this.customer= customer;
+    }
+
+    public void setStatus(PaymentStatus status) {
+        this.status = status;
     }
 /*
     @GeneratedValue(strategy = GenerationType.IDENTITY)
