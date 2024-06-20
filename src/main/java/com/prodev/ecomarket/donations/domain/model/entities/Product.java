@@ -9,6 +9,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Getter
+@Setter
 public class Product {
     @Id
     @Getter
@@ -31,6 +33,8 @@ public class Product {
     @Column(nullable = false)
     private Integer quantity;
 
+    private double price;
+
     @Getter
     @Column(nullable = false, length = 200)
     private String defect;
@@ -46,6 +50,7 @@ public class Product {
         this.quantity = command.quantity();
         this.defect = command.defect();
         this.urlImage = command.urlImage();
+        this.price = command.price();
     }
 
 }
