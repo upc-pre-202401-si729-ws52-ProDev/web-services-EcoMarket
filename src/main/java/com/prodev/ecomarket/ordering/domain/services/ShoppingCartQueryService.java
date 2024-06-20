@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ShoppingCartQueryService {
     List<CartItem> handle(GetAllCartItemsFromShoppingCartQuery query);
+
 }
