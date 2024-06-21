@@ -29,9 +29,13 @@ public class Payments extends AuditableAbstractAggregateRoot<Payments> {
     @Getter
     private Double amount;
 
-    @Column(nullable = false, length = 50)
+/*    @Column(nullable = false, length = 50)
     @Getter
-    private PaymentStatus status;
+    private PaymentStatus status;*/
+
+    @Column(nullable = false, length = 100)
+    @Getter
+    private String description;
 
     @Column(nullable = false, length = 50)
     @Getter
@@ -48,16 +52,17 @@ public class Payments extends AuditableAbstractAggregateRoot<Payments> {
     public Payments() {
     }
 
-    public Payments(CreatePaymentsCommand command, Customer customer, PaymentStatus status) {
+    public Payments(CreatePaymentsCommand command, Customer customer) {
         this.amount = command.amount();
-        this.status = status;
+      //  this.status = status;
+        this.description = command.description();
         this.method = command.method();
         this.customer= customer;
     }
 
-    public void setStatus(PaymentStatus status) {
+   /* public void setStatus(PaymentStatus status) {
         this.status = status;
-    }
+    }*/
 /*
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter

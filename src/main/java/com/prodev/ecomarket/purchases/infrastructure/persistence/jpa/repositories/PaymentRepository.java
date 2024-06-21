@@ -12,6 +12,6 @@ import java.util.Date;
 @Repository
 public interface PaymentRepository extends JpaRepository<Payments, Long> {
     List<Payments> findByCustomerId(Long customerId);
-    List<Payments> findByStatus(PaymentStatus status);
+    //List<Payments> findByStatus(PaymentStatus status);
 
 }

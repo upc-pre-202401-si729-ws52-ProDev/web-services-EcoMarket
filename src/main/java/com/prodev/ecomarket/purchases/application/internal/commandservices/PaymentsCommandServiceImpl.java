@@ -26,28 +26,18 @@ public class PaymentsCommandServiceImpl implements PaymentCommandService {
         var customer = customerRepository.findById(command.customerId())
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
 
-        var payment = new Payments(command, customer, PaymentStatus.PENDING);
+        var payment = new Payments(command, customer);
         paymentRepository.save(payment);
 
-        boolean paymentSuccessful = processPayment(payment);
-
-        if (paymentSuccessful) {
-            payment.setStatus(PaymentStatus.PAID);
-        } else {
-            payment.setStatus(PaymentStatus.FAILED);
-            throw new IllegalArgumentException("Payment processing failed for payment ID: " + payment.getId());
-        }
-
-        paymentRepository.save(payment);
 
         return Optional.of(payment);
 
     }
-    private boolean processPayment(Payments payment) {
+    /*private boolean processPayment(Payments payment) {
         // Simulación: Probabilidad de éxito del 90%
         double random = Math.random();
         // Pago fallido
         return random < 0.9; // Pago exitoso
-    }
+    }*/
 }
 
