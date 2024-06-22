@@ -23,11 +23,11 @@ public class PaymentsQueryServiceImpl implements PaymentQueryService {
     public List<Payments> handle(GetPaymentsByCustomerIdQuery query) {
         return paymentRepository.findByCustomerId(query.customerId());
     }
-
+/*
     @Override
     public List<Payments> handle(GetPaymentsByStatusQuery query) {
         return paymentRepository.findByStatus(query.status());
-    }
+    }*/
 
     @Override
     public List<Payments> handle(GetAllPaymentsQuery query) {
