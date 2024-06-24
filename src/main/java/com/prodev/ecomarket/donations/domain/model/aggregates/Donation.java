@@ -72,10 +72,7 @@ public class Donation extends AbstractAggregateRoot<Donation> {
         this.quantity = command.quantity();
         this.description = command.description();
         this.ong = command.ong();
-        //TODO: Uncomment this code when the repositories are implemented and ask at the teacher if it is correct.
-        /*this.product = productRepository.findById(command.productId())
-                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
-        this.company = companyRepository.findById(command.companyId())
-                .orElseThrow(() -> new IllegalArgumentException("Company not found"));*/
+        this.company = command.company();
+        this.product = command.product();
     }
 }
