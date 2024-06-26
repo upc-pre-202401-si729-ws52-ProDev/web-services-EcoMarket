@@ -60,7 +60,7 @@ public class ShoppingCartHandleServiceImpl implements ShoppingCartHandleService 
 
     @Override
     public Optional<ShoppingCart> handle(CreateShoppingCartCommand command) {
-        var shoppingCart = new ShoppingCart();
+        var shoppingCart = new ShoppingCart(command);
         try{
             shoppingCartRepository.save(shoppingCart);
             return Optional.of(shoppingCart);

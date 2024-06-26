@@ -1,5 +1,6 @@
 package com.prodev.ecomarket.purchases.domain.model.aggregates;
 
+import com.prodev.ecomarket.ordering.domain.model.aggregates.ShoppingCart;
 import com.prodev.ecomarket.purchases.domain.model.commands.CreatePaymentsCommand;
 import com.prodev.ecomarket.purchases.domain.model.valueobjects.PaymentStatus;
 import com.prodev.ecomarket.purchases.infrastructure.persistence.jpa.repositories.CustomerRepository;
@@ -44,7 +45,7 @@ public class Payments extends AuditableAbstractAggregateRoot<Payments> {
     /** The customer who made the payment */
     @Getter
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false,
+    @JoinColumn(name = "customer_id",
             foreignKey = @ForeignKey(name = "FK_payment_customer"))
     private Customer customer;
 
@@ -58,6 +59,14 @@ public class Payments extends AuditableAbstractAggregateRoot<Payments> {
         this.description = command.description();
         this.method = command.method();
         this.customer= customer;
+    }
+
+    public Payments(ShoppingCart cart){
+        this.amount = cart.getTotal();
+        this.status = PaymentStatus.PENDING;
+        this.description = "Payment for shopping cart " + cart.getId();
+        this.customer = cart.getCustomer();
+        this.method = "Credit Card";
     }
 
    public void setStatus(PaymentStatus status) {
@@ -88,4 +97,5 @@ public class Payments extends AuditableAbstractAggregateRoot<Payments> {
     public String getStatus(){
         return this.status.name().toLowerCase();
     }
+
 }

@@ -1,5 +1,6 @@
 package com.prodev.ecomarket.purchases.domain.model.aggregates;
 
+import com.prodev.ecomarket.ordering.domain.model.aggregates.ShoppingCart;
 import com.prodev.ecomarket.purchases.domain.model.commands.CreatePurchaseCommand;
 import com.prodev.ecomarket.purchases.domain.model.entities.Customer;
 import jakarta.persistence.*;
@@ -46,6 +47,12 @@ public class Purchase extends AbstractAggregateRoot<Purchase> {
             foreignKey = @ForeignKey(name = "FK_purchase_customer"))
     private Customer customer;
 
+    public Purchase(ShoppingCart cart){
+        this.totalAmount = cart.getTotal();
+        this.status = "PENDING";
+        this.paymentMethod = "CREDIT_CARD";
+        this.customer = cart.getCustomer();
+    }
 
     protected Purchase(){}
     public Purchase (CreatePurchaseCommand command){
