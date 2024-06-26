@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface PaymentQueryService {
     List<Payments> handle(GetPaymentsByCustomerIdQuery query);
-    List<Payments> handle(GetPaymentsByStatusQuery query);
+   // List<Payments> handle(GetPaymentsByStatusQuery query);
     List<Payments> handle(GetAllPaymentsQuery query);
 }

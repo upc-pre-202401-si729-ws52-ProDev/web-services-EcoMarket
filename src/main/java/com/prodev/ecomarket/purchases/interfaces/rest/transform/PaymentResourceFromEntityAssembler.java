@@ -7,11 +7,12 @@ public class PaymentResourceFromEntityAssembler {
     public static PaymentResource toResourceFromEntity(Payments entity) {
         return new PaymentResource(
             entity.getId(),
-            entity.getMethod(),
-            entity.getStatus(),
-            entity.getCreatedAt().toString(),
-            entity.getUpdatedAt().toString(),
-            entity.getAmount()
+                entity.getAmount(),
+                entity.getDescription(),
+            entity.getMethod()
+            //entity.getStatus(),
+
+
         );
     }
 }

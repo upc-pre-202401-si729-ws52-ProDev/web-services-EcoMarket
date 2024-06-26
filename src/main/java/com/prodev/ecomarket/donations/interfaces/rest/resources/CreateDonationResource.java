@@ -1,4 +1,4 @@
 package com.prodev.ecomarket.donations.interfaces.rest.resources;
 
-public record CreateDonationResource(String ong, String product, String company, Integer quantity, String description ) {
+public record CreateDonationResource(String ong, Long productId, Long companyId, Integer quantity, String description ) {
 }
