@@ -1,4 +1,4 @@
 package com.prodev.ecomarket.donations.domain.model.commands;
 
-public record CreateCompanyCommand() {
+public record CreateCompanyCommand(String ruc, String aboutDescription) {
 }
