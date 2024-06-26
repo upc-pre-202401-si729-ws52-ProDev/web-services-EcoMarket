@@ -1,5 +1,7 @@
 package com.prodev.ecomarket.donations.interfaces.rest;
 
+import com.prodev.ecomarket.donations.domain.model.commands.CreateCompanyCommand;
+import com.prodev.ecomarket.donations.domain.model.commands.UpdateCompanyCommand;
 import com.prodev.ecomarket.donations.domain.model.entities.Company;
 import com.prodev.ecomarket.donations.domain.model.queries.GetAllCompanysQuery;
 import com.prodev.ecomarket.donations.domain.model.queries.GetCompanyByIdQuery;
@@ -65,5 +67,34 @@ public class CompanyController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CompanyResource> updateCompany(@PathVariable Long id, @RequestBody CreateCompanyResource createCompanyResource) {
+        GetCompanyByIdQuery query = new GetCompanyByIdQuery(id);
+        Optional<Company> existingCompany = companyQueryService.handle(query);
+
+        if (existingCompany.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        Company company = existingCompany.get();
+        company.setRuc(createCompanyResource.ruc());
+        company.setAboutDescription(createCompanyResource.aboutDescription());
+
+        UpdateCompanyCommand updateCompanyCommand = new UpdateCompanyCommand(
+                id,
+                company.getRuc(),
+                company.getAboutDescription()
+        );
+
+        Optional<Company> updatedCompany = companyCommandService.handle(updateCompanyCommand);
+
+        if (updatedCompany.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        CompanyResource companyResource = CompanyResourceFromEntityAssembler.toResourceFromEntity(updatedCompany.get());
+        return new ResponseEntity<>(companyResource, HttpStatus.OK);
     }
 }
