@@ -59,4 +59,23 @@ public class DonationController {
         return donationRepository.save(donation);
     }
 
+    @GetMapping("/company/{companyId}")
+    public ResponseEntity<List<DonationResource>> getDonationsByCompanyId(@PathVariable Long companyId) {
+        List<Donation> donations = donationQueryService.handle(companyId);
+
+        List<DonationResource> donationResources = donations.stream()
+                .map(DonationResourceFromEntityAssembler::toResourceFromEntity)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(donationResources);
+    }
+
+    @PostMapping("/company/{companyId}")
+    public ResponseEntity<DonationResource> createDonationByCompanyId(@PathVariable Long companyId, @RequestBody CreateDonationResource createDonationResource) {
+        CreateDonationCommand createDonationCommand = CreateDonationCommandFromResourceAssembler.toCommandFromResource(createDonationResource, productRepository, companyRepository);
+        Donation donation = donationCommandService.handle(companyId, createDonationCommand);
+
+        DonationResource donationResource = DonationResourceFromEntityAssembler.toResourceFromEntity(donation);
+        return new ResponseEntity<>(donationResource, HttpStatus.CREATED);
+    }
 }
