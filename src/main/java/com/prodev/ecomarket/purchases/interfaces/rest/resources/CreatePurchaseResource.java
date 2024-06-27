@@ -6,6 +6,6 @@ public record CreatePurchaseResource(Date date,
                                      double totalAmount,
                                      String status,
                                      String paymentMethod,
-                                     int customerId,
+                                     Long customerId,
                                      int paymentId) {
 }
