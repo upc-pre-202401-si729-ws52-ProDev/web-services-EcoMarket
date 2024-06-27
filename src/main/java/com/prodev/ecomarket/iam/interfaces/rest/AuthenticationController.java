@@ -10,6 +10,8 @@ import com.prodev.ecomarket.iam.interfaces.rest.resources.SignInResource;
 import com.prodev.ecomarket.iam.interfaces.rest.resources.SignUpResource;
 import com.prodev.ecomarket.iam.interfaces.rest.resources.UserResource;
 import com.prodev.ecomarket.iam.interfaces.rest.transform.*;
+import com.prodev.ecomarket.purchases.domain.model.commands.CreateCustommerCommand;
+import com.prodev.ecomarket.purchases.domain.services.CustomerCommandService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.prodev.ecomarket.iam.interfaces.rest.transform.CreateCompanyCommandFromSignUpCommand.toCreateCompanyCommand;
+import static com.prodev.ecomarket.iam.interfaces.rest.transform.CreateCustomerCommandFromSignUpResource.toCreateCustomerCommand;
 
 /**
  * AuthenticationController
@@ -39,11 +42,13 @@ public class AuthenticationController {
     private final UserCommandService userCommandService;
     private final CompanyCommandService companyCommandService;
     private final UserRepository userRepository;
+    private final CustomerCommandService customerCommandService;
 
-    public AuthenticationController(UserCommandService userCommandService, CompanyCommandService companyCommandService, UserRepository userRepository) {
+    public AuthenticationController(UserCommandService userCommandService, CompanyCommandService companyCommandService, UserRepository userRepository, CustomerCommandService customerCommandService) {
         this.userCommandService = userCommandService;
         this.companyCommandService = companyCommandService;
         this.userRepository = userRepository;
+        this.customerCommandService = customerCommandService;
     }
 
     /**
@@ -81,6 +86,13 @@ public class AuthenticationController {
             var company = companyCommandService.handle(createCompanyCommand);
             if (company.isPresent()) {
                 user.get().setCompany(company.get());
+                userRepository.save(user.get());
+            }
+        } else {
+            CreateCustommerCommand createCustommerCommand = toCreateCustomerCommand(signUpResource);
+            var customer = customerCommandService.handle(createCustommerCommand);
+            if (customer.isPresent()) {
+                user.get().setCustomer(customer.get());
                 userRepository.save(user.get());
             }
         }

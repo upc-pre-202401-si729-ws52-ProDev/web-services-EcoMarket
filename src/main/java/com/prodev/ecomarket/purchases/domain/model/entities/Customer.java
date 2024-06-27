@@ -1,7 +1,6 @@
 package com.prodev.ecomarket.purchases.domain.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.prodev.ecomarket.donations.domain.model.valueobjects.Profile;
 import com.prodev.ecomarket.ordering.domain.model.aggregates.ShoppingCart;
 import com.prodev.ecomarket.purchases.domain.model.aggregates.Payments;
 import com.prodev.ecomarket.purchases.domain.model.aggregates.Purchase;
@@ -32,8 +31,6 @@ public class Customer extends AbstractAggregateRoot<Customer> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 200)
-    private String address;
 
     @OneToMany(mappedBy = "customer")
     @JsonBackReference
