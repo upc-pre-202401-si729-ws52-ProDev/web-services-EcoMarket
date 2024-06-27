@@ -75,4 +75,8 @@ public class Donation extends AbstractAggregateRoot<Donation> {
         this.company = command.company();
         this.product = command.product();
     }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 }

@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface DonationCommandService {
     Optional<Donation> handle(CreateDonationCommand command);
+    Donation handle(Long companyId, CreateDonationCommand createDonationCommand);
+
 }

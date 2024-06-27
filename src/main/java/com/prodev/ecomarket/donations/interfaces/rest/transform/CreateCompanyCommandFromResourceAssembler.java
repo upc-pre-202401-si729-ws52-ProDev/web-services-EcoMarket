@@ -6,6 +6,7 @@ import com.prodev.ecomarket.donations.interfaces.rest.resources.CreateCompanyRes
 public class CreateCompanyCommandFromResourceAssembler {
     public static CreateCompanyCommand toCommandFromResource(CreateCompanyResource resource) {
         return new CreateCompanyCommand(
+                resource.name(),
                 resource.ruc(),
                 resource.aboutDescription()
         );
