@@ -12,6 +12,10 @@ import lombok.*;
 @Entity
 public class Company extends Profile {
 
+    @Column(nullable = false, length = 100)
+    @Getter
+    private String name;
+
     @Column(nullable = false, length = 11)
     @Getter
     private String ruc;
@@ -19,7 +23,6 @@ public class Company extends Profile {
     @Column(nullable = false, length = 200)
     @Getter
     private String aboutDescription;
-
 
     protected Company() {
     }
@@ -30,5 +33,9 @@ public class Company extends Profile {
     }
 
 
-
+    public Company(CreateCompanyCommand command) {
+        this.name = command.name();
+        this.ruc = command.ruc();
+        this.aboutDescription = command.aboutDescription();
+    }
 }

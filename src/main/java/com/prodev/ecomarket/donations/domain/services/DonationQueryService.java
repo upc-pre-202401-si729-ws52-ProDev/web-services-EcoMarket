@@ -11,4 +11,6 @@ public interface DonationQueryService {
     List<Donation> handle(GetAllDonationsQuery query);
     List<Donation> handle(GetDonationsByCompanyQuery query );
     List<Donation> handle(GetDonationsByOngQuery query);
+    List<Donation> handle(Long companyId);
+
 }

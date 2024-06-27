@@ -14,7 +14,6 @@ public class CreateDonationCommandFromResourceAssembler {
         if(Product == null || Company == null)
             throw new IllegalArgumentException("Product or Company not found");
 
-
         return new CreateDonationCommand(
                 resource.quantity(),
                 resource.description(),
