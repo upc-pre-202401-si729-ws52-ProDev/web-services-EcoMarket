@@ -27,10 +27,6 @@ public class Company extends Profile {
     protected Company() {
     }
 
-    public Company(CreateCompanyCommand command){
-        this.ruc = command.ruc();
-        this.aboutDescription = command.aboutDescription();
-    }
 
 
     public Company(CreateCompanyCommand command) {

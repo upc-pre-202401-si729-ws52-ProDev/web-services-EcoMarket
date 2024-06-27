@@ -7,7 +7,7 @@ public class CreateCustomerCommandFromSignUpResource {
     public static CreateCustommerCommand toCreateCustomerCommand(SignUpResource resource) {
         return new CreateCustommerCommand(
                 resource.loyaltyPoi().get(),
-                resource.name().get(),
+                resource.username(),
                 resource.lastName().get(),
                 resource.age().get(),
                 resource.address().get(),

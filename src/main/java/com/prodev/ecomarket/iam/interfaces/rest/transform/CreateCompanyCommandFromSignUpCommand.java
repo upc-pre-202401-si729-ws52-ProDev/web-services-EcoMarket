@@ -10,11 +10,12 @@ public class CreateCompanyCommandFromSignUpCommand {
     public static CreateCompanyCommand toCreateCompanyCommand(SignUpResource signUpResource) {
         Optional<String> ruc = signUpResource.ruc();
         Optional<String> aboutDescription = signUpResource.aboutDescription();
+        var name = signUpResource.username();
 
-        if (ruc.isEmpty() || aboutDescription.isEmpty()) {
-            throw new IllegalArgumentException("RUC and aboutDescription are required");
+        if (ruc.isEmpty() || aboutDescription.isEmpty() || name.isEmpty()) {
+            throw new IllegalArgumentException("RUC, description and name are required");
         }
 
-        return new CreateCompanyCommand(ruc.get(), aboutDescription.get());
+        return new CreateCompanyCommand(name,ruc.get(), aboutDescription.get());
     }
 }
