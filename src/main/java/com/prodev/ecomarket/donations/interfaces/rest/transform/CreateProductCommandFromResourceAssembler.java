@@ -11,7 +11,9 @@ public class CreateProductCommandFromResourceAssembler {
             resource.type(),
             resource.quantity(),
             resource.defect(),
-            resource.urlImage()
+            resource.urlImage(),
+            resource.price(),
+            resource.userId()
         );
     }
 }

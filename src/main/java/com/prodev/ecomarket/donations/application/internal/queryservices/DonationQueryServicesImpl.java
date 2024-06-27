@@ -32,4 +32,9 @@ public class DonationQueryServicesImpl implements DonationQueryService {
     public List<Donation> handle(GetDonationsByOngQuery query) {
         return donationRepository.findByOng(query.ong());
     }
+
+    @Override
+    public List<Donation> handle(Long companyId) {
+        return donationRepository.findByCompanyId(companyId);
+    }
 }
