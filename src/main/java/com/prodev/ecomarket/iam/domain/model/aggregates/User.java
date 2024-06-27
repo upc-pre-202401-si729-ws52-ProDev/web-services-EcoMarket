@@ -1,6 +1,7 @@
 package com.prodev.ecomarket.iam.domain.model.aggregates;
 
 import com.prodev.ecomarket.donations.domain.model.entities.Company;
+import com.prodev.ecomarket.donations.domain.model.entities.Product;
 import com.prodev.ecomarket.iam.domain.model.entities.Role;
 import com.prodev.ecomarket.purchases.domain.model.entities.Customer;
 import com.prodev.ecomarket.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
@@ -10,6 +11,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,6 +45,11 @@ public class User extends AuditableAbstractAggregateRoot<User> {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "company_id", referencedColumnName = "id")
     private Company company;
+
+    //Relationship with products
+    // En User.java
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Product> products = new ArrayList<>();
 
     public User() {
         this.roles = new HashSet<>();
