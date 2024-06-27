@@ -1,5 +1,6 @@
 package com.prodev.ecomarket.purchases.interfaces.rest;
 
+import com.prodev.ecomarket.purchases.domain.model.queries.GetPurchasesByCustomerIdQuery;
 import com.prodev.ecomarket.purchases.domain.services.PurchaseCommandService;
 import com.prodev.ecomarket.purchases.domain.services.PurchaseQueryService;
 import com.prodev.ecomarket.purchases.infrastructure.persistence.jpa.repositories.CustomerRepository;
@@ -13,9 +14,10 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
@@ -43,5 +45,22 @@ public class PurchasesController {
 
         var purchaseResource = PurchaseResourceFromEntityAssembler.toPurchaseFromEntity(purchase.get());
         return new ResponseEntity<>(purchaseResource, HttpStatus.CREATED);
+    }
+
+    //TODO: Implementar obtencion de compras por ID de cliente
+    @GetMapping("/{customerId}")
+    public ResponseEntity<List<PurchaseResource>> getPurchasesByCustomerId(@PathVariable Long customerId){
+        try {
+            var purchases = purchaseQueryService.handle(new GetPurchasesByCustomerIdQuery(customerId));
+            var purchaseResources = purchases.stream()
+                    .map(PurchaseResourceFromEntityAssembler::toPurchaseFromEntity)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(purchaseResources);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

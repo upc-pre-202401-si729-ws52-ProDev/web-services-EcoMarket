@@ -31,6 +31,7 @@ public class PaymentsQueryServiceImpl implements PaymentQueryService {
 
     @Override
     public List<Payments> handle(GetAllPaymentsQuery query) {
+
         return paymentRepository.findAll();
     }
 }

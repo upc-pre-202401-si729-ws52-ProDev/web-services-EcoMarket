@@ -1,6 +1,5 @@
 package com.prodev.ecomarket.purchases.interfaces.rest;
 
-import com.prodev.ecomarket.purchases.domain.model.entities.Customer;
 import com.prodev.ecomarket.purchases.domain.model.queries.GetPaymentsByCustomerIdQuery;
 import com.prodev.ecomarket.purchases.domain.services.PaymentCommandService;
 import com.prodev.ecomarket.purchases.domain.services.PaymentQueryService;
@@ -8,7 +7,6 @@ import com.prodev.ecomarket.purchases.interfaces.rest.resources.CreatePaymentRes
 import com.prodev.ecomarket.purchases.interfaces.rest.resources.PaymentResource;
 import com.prodev.ecomarket.purchases.interfaces.rest.transform.CreatePaymentCommandFromResourceAssembler;
 import com.prodev.ecomarket.purchases.interfaces.rest.transform.PaymentResourceFromEntityAssembler;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
