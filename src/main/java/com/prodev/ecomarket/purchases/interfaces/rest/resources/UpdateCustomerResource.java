@@ -1,6 +1,6 @@
-package com.prodev.ecomarket.purchases.domain.model.commands;
+package com.prodev.ecomarket.purchases.interfaces.rest.resources;
 
-public record CreateCustommerCommand(int loyaltyPoi,
+public record UpdateCustomerResource(int loyaltyPoi,
                                      String name,
                                      String lastName,
                                      int age,
