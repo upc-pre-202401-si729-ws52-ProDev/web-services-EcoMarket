@@ -1,7 +1,8 @@
 package com.prodev.ecomarket.iam.domain.model.aggregates;
 
-
+import com.prodev.ecomarket.donations.domain.model.entities.Company;
 import com.prodev.ecomarket.iam.domain.model.entities.Role;
+import com.prodev.ecomarket.purchases.domain.model.entities.Customer;
 import com.prodev.ecomarket.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -13,12 +14,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * User aggregate root
- * This class represents the aggregate root for the User entity.
- *
- * @see AuditableAbstractAggregateRoot
- */
 @Getter
 @Setter
 @Entity
@@ -33,15 +28,26 @@ public class User extends AuditableAbstractAggregateRoot<User> {
     @Size(max = 120)
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL) // Eager fetch to load the roles when loading the user en españo
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(	name = "user_roles",
-                joinColumns = @JoinColumn(name = "user_id"),
-                inverseJoinColumns = @JoinColumn(name = "role_id"))
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+
+    @Setter
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    private Customer customer;
+
+    @Setter
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
+    private Company company;
 
     public User() {
         this.roles = new HashSet<>();
     }
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
@@ -53,25 +59,22 @@ public class User extends AuditableAbstractAggregateRoot<User> {
         addRoles(roles);
     }
 
-    /**
-     * Add a role to the user
-     * @param role the role to add
-     * @return the user with the added role
-     */
     public User addRole(Role role) {
         this.roles.add(role);
         return this;
     }
 
-    /**
-     * Add a list of roles to the user
-     * @param roles the list of roles to add
-     * @return the user with the added roles
-     */
     public User addRoles(List<Role> roles) {
         var validatedRoleSet = Role.validateRoleSet(roles);
         this.roles.addAll(validatedRoleSet);
         return this;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles.clear();
+        if (roles != null) {
+            this.roles.addAll(roles);
+        }
     }
 
 }

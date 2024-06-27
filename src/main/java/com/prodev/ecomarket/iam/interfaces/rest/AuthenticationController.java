@@ -1,15 +1,15 @@
 package com.prodev.ecomarket.iam.interfaces.rest;
 
 
+import com.prodev.ecomarket.donations.domain.model.commands.CreateCompanyCommand;
+import com.prodev.ecomarket.donations.domain.services.CompanyCommandService;
 import com.prodev.ecomarket.iam.domain.services.UserCommandService;
+import com.prodev.ecomarket.iam.infrastructure.persistence.jpa.repositories.UserRepository;
 import com.prodev.ecomarket.iam.interfaces.rest.resources.AuthenticatedUserResource;
 import com.prodev.ecomarket.iam.interfaces.rest.resources.SignInResource;
 import com.prodev.ecomarket.iam.interfaces.rest.resources.SignUpResource;
 import com.prodev.ecomarket.iam.interfaces.rest.resources.UserResource;
-import com.prodev.ecomarket.iam.interfaces.rest.transform.AuthenticatedUserResourceFromEntityAssembler;
-import com.prodev.ecomarket.iam.interfaces.rest.transform.SignInCommandFromResourceAssembler;
-import com.prodev.ecomarket.iam.interfaces.rest.transform.SignUpCommandFromResourceAssembler;
-import com.prodev.ecomarket.iam.interfaces.rest.transform.UserResourceFromEntityAssembler;
+import com.prodev.ecomarket.iam.interfaces.rest.transform.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.prodev.ecomarket.iam.interfaces.rest.transform.CreateCompanyCommandFromSignUpCommand.toCreateCompanyCommand;
 
 /**
  * AuthenticationController
@@ -35,9 +37,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Authentication", description = "Authentication Endpoints")
 public class AuthenticationController {
     private final UserCommandService userCommandService;
+    private final CompanyCommandService companyCommandService;
+    private final UserRepository userRepository;
 
-    public AuthenticationController(UserCommandService userCommandService) {
+    public AuthenticationController(UserCommandService userCommandService, CompanyCommandService companyCommandService, UserRepository userRepository) {
         this.userCommandService = userCommandService;
+        this.companyCommandService = companyCommandService;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -68,8 +74,20 @@ public class AuthenticationController {
         if (user.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
-        var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(user.get());
-        return new ResponseEntity<>(userResource, HttpStatus.CREATED);
 
+        // Crear y asociar Company con el User
+        if (signUpResource.roles().contains("ROLE_COMPANY")) {
+            CreateCompanyCommand createCompanyCommand = toCreateCompanyCommand(signUpResource);
+            var company = companyCommandService.handle(createCompanyCommand);
+            if (company.isPresent()) {
+                user.get().setCompany(company.get());
+                userRepository.save(user.get());
+            }
+        }
+
+        // Recuperar el usuario con los roles
+        var userWithRoles = userRepository.findById(user.get().getId());
+        var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(userWithRoles.get());
+        return new ResponseEntity<>(userResource, HttpStatus.CREATED);
     }
 }

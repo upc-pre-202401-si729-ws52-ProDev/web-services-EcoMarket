@@ -1,0 +1,31 @@
+package com.prodev.ecomarket.donations.application.internal.commandservices;
+
+import com.prodev.ecomarket.donations.domain.model.commands.CreateCompanyCommand;
+import com.prodev.ecomarket.donations.domain.model.entities.Company;
+import com.prodev.ecomarket.donations.domain.services.CompanyCommandService;
+import com.prodev.ecomarket.donations.infrastructure.persistence.jpa.repositories.CompanyRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+public class CompanyCommandServiceImpl implements CompanyCommandService {
+    private final CompanyRepository companyRepository;
+
+    public CompanyCommandServiceImpl(CompanyRepository companyRepository) {
+        this.companyRepository = companyRepository;
+    }
+
+    @Override
+    public Optional<Company> handle(CreateCompanyCommand command) {
+        Company company = new Company(command);
+        try {
+            companyRepository.save(company);
+            return Optional.of(company);
+        } catch (Exception e) {
+            throw new RuntimeException("Error creating company");
+        }
+    }
+
+
+}

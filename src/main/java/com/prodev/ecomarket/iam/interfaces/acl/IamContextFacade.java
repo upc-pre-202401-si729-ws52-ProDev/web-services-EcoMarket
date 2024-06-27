@@ -11,6 +11,7 @@ import org.apache.logging.log4j.util.Strings;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * IamContextFacade
@@ -37,7 +38,18 @@ public class IamContextFacade {
      * @return The id of the created user.
      */
     public Long createUser(String username, String password) {
-        var signUpCommand = new SignUpCommand(username, password, List.of(Role.getDefaultRole()));
+        var signUpCommand = new SignUpCommand(
+                username,
+                password,
+                List.of(Role.getDefaultRole()),
+                Optional.empty(), // ruc
+                Optional.empty(), // aboutDescription
+                Optional.empty(), // address
+                Optional.empty(), // loyaltyPoi
+                Optional.empty(), // email
+                Optional.empty(), // name
+                Optional.empty()  // phone
+        );
         var result = userCommandService.handle(signUpCommand);
         if (result.isEmpty()) return 0L;
         return result.get().getId();
@@ -52,7 +64,18 @@ public class IamContextFacade {
      */
     public Long createUser(String username, String password, List<String> roleNames) {
         var roles = roleNames != null ? roleNames.stream().map(Role::toRoleFromName).toList() : new ArrayList<Role>();
-        var signUpCommand = new SignUpCommand(username, password, roles);
+        var signUpCommand = new SignUpCommand(
+                username,
+                password,
+                roles,
+                Optional.empty(), // ruc
+                Optional.empty(), // aboutDescription
+                Optional.empty(), // address
+                Optional.empty(), // loyaltyPoi
+                Optional.empty(), // email
+                Optional.empty(), // name
+                Optional.empty()  // phone
+        );
         var result = userCommandService.handle(signUpCommand);
         if (result.isEmpty()) return 0L;
         return result.get().getId();

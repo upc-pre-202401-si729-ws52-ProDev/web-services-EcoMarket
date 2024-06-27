@@ -6,6 +6,7 @@ import com.prodev.ecomarket.iam.application.internal.outboundservices.tokens.Tok
 import com.prodev.ecomarket.iam.domain.model.aggregates.User;
 import com.prodev.ecomarket.iam.domain.model.commands.SignInCommand;
 import com.prodev.ecomarket.iam.domain.model.commands.SignUpCommand;
+import com.prodev.ecomarket.iam.domain.model.entities.Role;
 import com.prodev.ecomarket.iam.domain.services.UserCommandService;
 import com.prodev.ecomarket.iam.infrastructure.persistence.jpa.repositories.RoleRepository;
 import com.prodev.ecomarket.iam.infrastructure.persistence.jpa.repositories.UserRepository;
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * User command service implementation
@@ -69,8 +71,21 @@ public class UserCommandServiceImpl implements UserCommandService {
     public Optional<User> handle(SignUpCommand command) {
         if (userRepository.existsByUsername(command.username()))
             throw new RuntimeException("Username already exists");
+
         var roles = command.roles().stream().map(role -> roleRepository.findByName(role.getName()).orElseThrow(() -> new RuntimeException("Role name not found"))).toList();
-        var user = new User(command.username(), hashingService.encode(command.password()), roles);
+
+        // Comprueba si los campos Optional están presentes antes de usarlos
+        String ruc = command.ruc().orElse(null);
+        String aboutDescription = command.aboutDescription().orElse(null);
+        String address = command.address().orElse(null);
+        Integer loyaltyPoi = command.loyaltyPoi().orElse(null);
+
+
+        var user = new User(command.username(), hashingService.encode(command.password()));
+
+        // Asignar roles al usuario
+        user.setRoles(Set.copyOf(roles));
+
         userRepository.save(user);
         return userRepository.findByUsername(command.username());
     }
