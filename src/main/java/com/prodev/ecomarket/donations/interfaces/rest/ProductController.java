@@ -51,4 +51,14 @@ public class ProductController {
         return ResponseEntity.ok(productResources);
     }
 
+    // En ProductController.java
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<ProductResource>> getProductsByUserId(@PathVariable Long userId) {
+        var products = productRepository.findByUserId(userId);
+        List<ProductResource> productResources = products.stream()
+                .map(ProductResourceFromEntityAssembler::toResourceFromEntity)
+                .toList();
+        return ResponseEntity.ok(productResources);
+    }
+
 }
