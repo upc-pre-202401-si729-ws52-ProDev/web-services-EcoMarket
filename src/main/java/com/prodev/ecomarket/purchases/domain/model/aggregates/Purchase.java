@@ -15,6 +15,7 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public class Purchase extends AbstractAggregateRoot<Purchase> {
 
+
     //**The purchase id. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,10 +56,11 @@ public class Purchase extends AbstractAggregateRoot<Purchase> {
     }
 
     protected Purchase(){}
-    public Purchase (CreatePurchaseCommand command){
+    public Purchase (CreatePurchaseCommand command, Customer customer){
         this.totalAmount = command.totalAmount();
         this.status = command.status();
         this.paymentMethod = command.paymentMethod();
+        this.customer = customer;
 
         /*this.customer = customerRepository.findById(command.customerId())
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
